@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSFiddle 1a2tk78r</title>
+
+  <style>
+    :root {
+  --sky: #a9cbd5;
+  --cream: #e9e1cf;
+  --cream-2: #f1eadc;
+  --brown: #765437;
+  --brown-dark: #4e3929;
+  --red: #7e1818;
+  --red-dark: #571010;
+  --ink: #303a36;
+  --line: #7a5b3e;
+  --white: #fffaf0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  color: var(--ink);
+  background: var(--cream);
+  font-family: 'Space Grotesk', Arial, sans-serif;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.topbar {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 74px;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.brand {
+  font:
+    500 17px 'DM Mono',
+    monospace;
+  letter-spacing: 1px;
+}
+.brand span {
+  color: #f0d8a9;
+}
+.nav-links {
+  display: flex;
+  gap: 27px;
+  font:
+    500 10px 'DM Mono',
+    monospace;
+  text-transform: uppercase;
+}
+.nav-links a:hover {
+  text-decoration: underline;
+}
+.nav-share,
+.outline-button {
+  border: 1px solid currentColor;
+  padding: 10px 15px;
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  letter-spacing: 1px;
+}
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 0;
+  color: #fff;
+  font-size: 24px;
+}
+
+/* Hero modeled after the reference poster */
+.timeline-hero {
+  min-height: 530px;
+  padding: 135px 20px 55px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(168, 202, 212, 0.84), rgba(229, 220, 201, 0.92)),
+    url('https://images.unsplash.com/photo-1771533679967-1b6f3a10be02?auto=format&fit=crop&w=1600&q=80')
+      center/cover;
+}
+.timeline-hero:after {
+  content: '';
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -150px;
+  height: 270px;
+  background: rgba(90, 83, 70, 0.42);
+  border-radius: 50% 50% 0 0;
+  filter: blur(16px);
+}
+.mini-label {
+  position: relative;
+  z-index: 2;
+  font:
+    500 10px 'DM Mono',
+    monospace;
+  letter-spacing: 3px;
+  color: #705139;
+  margin-bottom: 18px;
+}
+.timeline-hero h1 {
+  position: relative;
+  z-index: 2;
+  color: #62482f;
+  font:
+    normal clamp(45px, 8vw, 86px)/0.95 'Archivo Black',
+    sans-serif;
+  letter-spacing: 2px;
+}
+.timeline-pill {
+  position: relative;
+  z-index: 2;
+  width: min(410px, 80vw);
+  margin: 25px auto 0;
+  height: 54px;
+  border-radius: 35px;
+  background: #aa8b70;
+  color: #fff8ed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font:
+    500 23px 'DM Mono',
+    monospace;
+}
+.hero-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 263px;
+  left: calc(50% + 190px);
+  color: #fff;
+  font-size: 48px;
+  transform: rotate(-12deg);
+}
+.hero-subtitle {
+  position: relative;
+  z-index: 2;
+  max-width: 510px;
+  margin: 28px auto 0;
+  font-size: 12px;
+  color: #705b47;
+}
+
+/* Timeline */
+.sites-section {
+  position: relative;
+  overflow: hidden;
+  padding: 35px 0 120px;
+  background:
+    linear-gradient(rgba(238, 230, 214, 0.93), rgba(238, 230, 214, 0.93)),
+    url('assets/reference-background.jpg') center/cover fixed;
+}
+.timeline {
+  width: min(900px, 92%);
+  margin: auto;
+  position: relative;
+}
+.timeline:before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 50%;
+  border-left: 5px dotted var(--brown);
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+.site-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 230px;
+  margin: 0 0 24px;
+  align-items: center;
+}
+.site-item.left {
+  justify-content: flex-start;
+  padding-right: 50%;
+}
+.site-item.right {
+  justify-content: flex-end;
+  padding-left: 50%;
+}
+.photo-wrap {
+  width: 310px;
+  aspect-ratio: 1.62;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 8px 22px rgba(62, 43, 27, 0.18);
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.site-info {
+  position: absolute;
+  z-index: 4;
+  width: 350px;
+  top: calc(50% + 74px);
+}
+.left .site-info {
+  left: calc(50% - 430px);
+  text-align: right;
+}
+.right .site-info {
+  right: calc(50% - 430px);
+  text-align: left;
+}
+.site-number {
+  display: block;
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  color: var(--brown);
+  margin-bottom: 4px;
+}
+.site-info h2 {
+  font:
+    normal clamp(22px, 3.2vw, 34px)/0.94 'Archivo Black',
+    sans-serif;
+  letter-spacing: 0.4px;
+  color: var(--brown-dark);
+}
+.site-info p {
+  max-width: 300px;
+  margin: 9px 0;
+  font-size: 10px;
+  line-height: 1.45;
+  color: #6c6256;
+}
+.left .site-info p {
+  margin-left: auto;
+}
+.site-info a {
+  display: inline-block;
+  margin-top: 4px;
+  font:
+    500 8px 'DM Mono',
+    monospace;
+  letter-spacing: 1px;
+  color: var(--red);
+  border-bottom: 1px solid var(--red);
+}
+.site-item:nth-child(n + 5) .site-info h2 {
+  color: var(--red);
+}
+.site-item:nth-child(n + 5) .site-number {
+  color: var(--red);
+}
+.site-item:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 72px;
+  border-top: 5px dotted var(--brown);
+}
+.site-item.left:after {
+  left: calc(50% - 35px);
+}
+.site-item.right:after {
+  right: calc(50% - 35px);
+}
+.site-item:before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 7px);
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: var(--brown);
+  border: 4px solid var(--cream);
+  z-index: 5;
+}
+
+/* Retained components */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--brown-dark);
+  color: #fff4e3;
+}
+.quick-links a {
+  padding: 27px 25px;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: 0.2s;
+}
+.quick-links a:last-child {
+  border: 0;
+}
+.quick-links a:hover {
+  background: var(--red);
+}
+.quick-links b {
+  font:
+    400 9px 'DM Mono',
+    monospace;
+  color: #d9bd96;
+}
+.quick-links strong {
+  font:
+    normal 18px 'Archivo Black',
+    sans-serif;
+}
+.quick-links small {
+  font-size: 9px;
+  opacity: 0.65;
+}
+
+.dark-section {
+  padding: 105px 0;
+  background: var(--red-dark);
+  color: #fff4e5;
+}
+.section-wrap {
+  width: min(1120px, 90%);
+  margin: auto;
+}
+.section-title span,
+.community-inner > div > span,
+.share-grid > div > span {
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  letter-spacing: 2px;
+  color: #d7b98e;
+}
+.section-title h2 {
+  margin-top: 13px;
+  font:
+    normal clamp(35px, 5vw, 64px)/0.95 'Archivo Black',
+    sans-serif;
+}
+.route-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 55px;
+  margin-top: 48px;
+}
+.route-map {
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  background: #d4d1b9;
+  color: var(--brown-dark);
+}
+.route-map:before {
+  content: '';
+  position: absolute;
+  width: 130%;
+  height: 75%;
+  left: -16%;
+  top: 10%;
+  background: #b9c6ad;
+  border-radius: 55% 45% 55% 45%;
+  transform: rotate(-15deg);
+}
+.map-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(72, 73, 55, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(72, 73, 55, 0.3) 1px, transparent 1px);
+  background-size: 45px 45px;
+}
+.map-route {
+  position: absolute;
+  width: 70%;
+  height: 57%;
+  left: 15%;
+  top: 19%;
+  border: 3px dashed var(--red);
+  border-radius: 45% 55% 55% 45%;
+  transform: rotate(-12deg);
+}
+.map-pin {
+  position: absolute;
+  z-index: 3;
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  font-style: normal;
+  font:
+    500 9px 'DM Mono',
+    monospace;
+}
+.pin-a {
+  left: 19%;
+  top: 57%;
+}
+.pin-b {
+  left: 48%;
+  top: 24%;
+}
+.pin-c {
+  left: 70%;
+  top: 55%;
+}
+.pin-d {
+  left: 55%;
+  top: 72%;
+}
+.route-map strong {
+  position: absolute;
+  z-index: 4;
+  right: 18px;
+  bottom: 18px;
+  font:
+    normal 12px 'Archivo Black',
+    sans-serif;
+}
+.route-list a {
+  display: grid;
+  grid-template-columns: 32px 1fr 20px;
+  gap: 15px;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+.route-list a > span {
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  color: #d4b78e;
+}
+.route-list small {
+  font:
+    500 8px 'DM Mono',
+    monospace;
+  color: #d4b78e;
+}
+.route-list h3 {
+  font:
+    normal 22px 'Archivo Black',
+    sans-serif;
+  margin-top: 5px;
+}
+.route-list p {
+  font-size: 9px;
+  opacity: 0.62;
+  margin-top: 4px;
+}
+
+/* Tips */
+.tips-section {
+  padding: 100px 0;
+  background: #d9cfbb;
+}
+.tips-section .section-title h2 {
+  color: var(--brown-dark);
+}
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 45px;
+  border-top: 1px solid #a58a6b;
+  border-bottom: 1px solid #a58a6b;
+}
+.tips-grid article {
+  padding: 30px;
+  min-height: 250px;
+  border-right: 1px solid #a58a6b;
+}
+.tips-grid article:last-child {
+  border: 0;
+}
+.tips-grid b {
+  display: block;
+  font:
+    500 10px 'DM Mono',
+    monospace;
+  color: var(--red);
+  margin-bottom: 65px;
+}
+.tips-grid h3 {
+  font:
+    normal 23px 'Archivo Black',
+    sans-serif;
+  color: var(--brown-dark);
+}
+.tips-grid p {
+  font-size: 10px;
+  color: #716657;
+  margin-top: 8px;
+  max-width: 270px;
+}
+
+/* Gallery */
+.gallery-section {
+  padding: 105px 0;
+  background: var(--cream-2);
+}
+.light-title h2 {
+  color: var(--brown-dark);
+}
+.gallery-grid {
+  margin-top: 45px;
+  display: grid;
+  grid-template-columns: 1.35fr 0.65fr 0.65fr;
+  grid-template-rows: 220px 220px;
+  gap: 9px;
+}
+.gallery-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9);
+  transition: 0.4s;
+}
+.gallery-grid img:hover {
+  filter: saturate(1.2);
+  transform: scale(1.015);
+}
+.gallery-grid img:first-child {
+  grid-row: span 2;
+}
+
+/* Community */
+.community {
+  padding: 95px 0;
+  background: var(--sky);
+}
+.community-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+.community-inner h2,
+.share-grid h2 {
+  margin-top: 15px;
+  color: var(--brown-dark);
+  font:
+    normal clamp(35px, 5vw, 64px)/0.94 'Archivo Black',
+    sans-serif;
+}
+.community-inner p,
+.share-grid > div > p {
+  max-width: 550px;
+  margin-top: 18px;
+  color: #675b4e;
+  font-size: 11px;
+}
+.outline-button {
+  color: var(--red-dark);
+  white-space: nowrap;
+}
+
+/* Share form */
+.share-section {
+  padding: 105px 0;
+  background: #eee6d6;
+}
+.share-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 90px;
+}
+.share-grid form {
+  display: grid;
+  gap: 11px;
+}
+input,
+textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #bca98e;
+  background: #f8f2e7;
+  color: var(--brown-dark);
+  outline: 0;
+  font-size: 11px;
+}
+input:focus,
+textarea:focus {
+  border-color: var(--red);
+}
+.dark-button {
+  border: 0;
+  padding: 14px 20px;
+  background: var(--red);
+  color: #fff7ea;
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+#formMessage {
+  min-height: 16px;
+  font-size: 10px;
+  color: var(--red);
+}
+
+footer {
+  background: #30241c;
+  color: #eee3d0;
+  padding: 60px 5% 22px;
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 45px;
+  width: min(1120px, 100%);
+  margin: auto;
+  padding-bottom: 50px;
+}
+.footer-brand {
+  display: block;
+  margin-bottom: 8px;
+}
+.footer-inner p,
+.footer-inner a {
+  font-size: 10px;
+  color: rgba(255, 244, 228, 0.58);
+}
+.footer-inner h4 {
+  font:
+    500 9px 'DM Mono',
+    monospace;
+  color: #d7b98e;
+  letter-spacing: 1px;
+  margin-bottom: 13px;
+}
+.footer-inner div:not(:first-child) a {
+  display: block;
+  margin: 7px 0;
+}
+.footer-bottom {
+  width: min(1120px, 100%);
+  margin: auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  font:
+    500 8px 'DM Mono',
+    monospace;
+  color: rgba(255, 244, 228, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .topbar {
+    padding: 0 20px;
+  }
+  .nav-links,
+  .nav-share {
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .nav-links.open {
+    display: flex;
+    position: absolute;
+    top: 74px;
+    left: 0;
+    right: 0;
+    padding: 10px 20px;
+    flex-direction: column;
+    gap: 0;
+    background: var(--brown-dark);
+  }
+  .nav-links.open a {
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .timeline-hero {
+    min-height: 470px;
+    padding-top: 120px;
+  }
+  .hero-arrow {
+    left: auto;
+    right: 15%;
+    top: 260px;
+  }
+  .site-item {
+    min-height: 205px;
+  }
+  .photo-wrap {
+    width: 260px;
+  }
+  .site-info {
+    width: 270px;
+  }
+  .left .site-info {
+    left: calc(50% - 330px);
+  }
+  .right .site-info {
+    right: calc(50% - 330px);
+  }
+  .route-grid,
+  .share-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+  .tips-grid article {
+    border-right: 0;
+    border-bottom: 1px solid #a58a6b;
+  }
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 220px 220px;
+  }
+  .gallery-grid img:first-child {
+    grid-row: span 2;
+  }
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .brand {
+    font-size: 12px;
+  }
+  .timeline-hero h1 {
+    font-size: 43px;
+  }
+  .timeline-pill {
+    height: 47px;
+    font-size: 17px;
+    gap: 7px;
+  }
+  .hero-arrow {
+    font-size: 38px;
+    right: 10%;
+    top: 245px;
+  }
+  .timeline:before {
+    left: 16px;
+  }
+  .site-item,
+  .site-item.left,
+  .site-item.right {
+    display: block;
+    padding: 0 0 0 40px;
+    min-height: 0;
+    margin-bottom: 62px;
+  }
+  .site-item:after {
+    left: 16px !important;
+    right: auto !important;
+    top: 80px;
+    width: 45px;
+  }
+  .site-item:before {
+    left: 16px;
+  }
+  .photo-wrap {
+    width: 100%;
+    max-width: 330px;
+  }
+  .site-info,
+  .left .site-info,
+  .right .site-info {
+    position: static;
+    width: 100%;
+    max-width: 330px;
+    margin-top: 12px;
+    text-align: left;
+  }
+  .left .site-info p {
+    margin-left: 0;
+  }
+  .site-info h2 {
+    font-size: 27px;
+  }
+  .quick-links {
+    grid-template-columns: 1fr 1fr;
+  }
+  .quick-links a {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .section-title h2 {
+    font-size: 40px;
+  }
+  .route-map {
+    height: 330px;
+  }
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 200px);
+  }
+  .gallery-grid img:first-child {
+    grid-row: auto;
+  }
+  .community-inner {
+    display: block;
+  }
+  .outline-button {
+    display: inline-block;
+    margin-top: 25px;
+  }
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 20px;
+  }
+  .footer-inner > div:first-child {
+    grid-column: span 2;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 7px;
+  }
+}
+  </style>
+
+  
+</head>
+<body>
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="description"
+      content="Beautiful Sites — a visual travel timeline of remarkable Philippine destinations."
+    />
+
+    <title>Beautiful Sites | The Explorer's Vault</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a href="#home" class="brand"> THE EXPLORER'S <span>VAULT</span> </a>
+
+      <nav class="nav-links">
+        <a href="#sites"> Beautiful Sites </a>
+        <a href="#routes"> Routes </a>
+        <a href="#tips"> Travel Tips </a>
+        <a href="#gallery"> Gallery </a>
+        <a href="#community"> Community </a>
+      </nav>
+
+      <a class="nav-share" href="#share"> Share a Story </a>
+
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
+        ☰
+      </button>
+    </header>
+
+    <main id="home">
+      <section class="timeline-hero">
+        <p class="mini-label">THE EXPLORER'S VAULT / 01</p>
+
+        <h1>BEAUTIFUL SITES</h1>
+
+        <div class="timeline-pill">
+          <span>T</span>
+          <span>I</span>
+          <span>M</span>
+          <span>E</span>
+          <span>L</span>
+          <span>I</span>
+          <span>N</span>
+          <span>E</span>
+        </div>
+
+        <div class="hero-arrow">↘</div>
+
+        <p class="hero-subtitle">
+          A visual journey through remarkable places in the Philippines.
+        </p>
+      </section>
+
+      <section class="sites-section" id="sites">
+        <div class="timeline">
+          <!-- INTRAMUROS -->
+          <article class="site-item left">
+            <div class="photo-wrap">
+              <img class="photo" src="INTRAMUROS.jpg" alt="Intramuros" />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">01</span>
+
+              <h2>INTRAMUROS</h2>
+
+              <p>
+                Walk through Manila's historic walled city and discover
+                centuries of Filipino history.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- BANAUE -->
+          <article class="site-item right">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="BANAUE RICE TERRACES.jpg"
+                alt="Banaue Rice Terraces"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">02</span>
+
+              <h2>
+                BANAUE RICE<br />
+                TERRACES
+              </h2>
+
+              <p>Ancient terraces carved into the mountains of Ifugao.</p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- SAGADA -->
+          <article class="site-item left">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="SAGADA MOUNTAINS.jpg"
+                alt="Sagada Mountains"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">03</span>
+
+              <h2>
+                SAGADA<br />
+                MOUNTAINS
+              </h2>
+
+              <p>
+                Misty highlands, dramatic cliffs, caves, and quiet mountain
+                trails.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- PUERTO PRINCESA -->
+          <article class="site-item right">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="PUERTO PRINCESA UNDERGROUND RIVER.jpg"
+                alt="Puerto Princesa Underground River"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">04</span>
+
+              <h2>
+                PUERTO PRINCESA<br />
+                UNDERGROUND RIVER
+              </h2>
+
+              <p>
+                Enter a spectacular subterranean river surrounded by limestone
+                formations.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- EL NIDO -->
+          <article class="site-item left">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="EL NIDO LAGOONS.jpg"
+                alt="El Nido Lagoons"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">05</span>
+
+              <h2>
+                EL NIDO<br />
+                LAGOONS
+              </h2>
+
+              <p>
+                Turquoise water, limestone islands, hidden lagoons, and
+                island-hopping routes.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- CORON -->
+          <article class="site-item right">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="CARON KAYANGAN LAKE.jpg"
+                alt="Coron Kayangan Lake"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">06</span>
+
+              <h2>
+                CORON<br />
+                KAYANGAN LAKE
+              </h2>
+
+              <p>Clear blue water surrounded by towering limestone cliffs.</p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- CEBU CITY -->
+          <article class="site-item left">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="CEBU CITY IT PARK.jpg"
+                alt="Cebu City IT Park"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">07</span>
+
+              <h2>
+                CEBU CITY<br />
+                IT PARK
+              </h2>
+
+              <p>
+                A striking landmark that adds a modern artistic stop to the
+                journey.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+
+          <!-- BOHOL -->
+          <article class="site-item right">
+            <div class="photo-wrap">
+              <img
+                class="photo"
+                src="BOHOL CHOCOLATE HILLS.jpg"
+                alt="Bohol Chocolate Hills"
+              />
+            </div>
+
+            <div class="site-info">
+              <span class="site-number">08</span>
+
+              <h2>
+                BOHOL<br />
+                CHOCOLATE HILLS
+              </h2>
+
+              <p>
+                A rolling landscape of hundreds of distinctive cone-shaped
+                hills.
+              </p>
+
+              <a href="#routes">EXPLORE SITE →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- QUICK LINKS -->
+      <section class="quick-links">
+        <a href="#sites">
+          <b>01</b>
+          <strong>POPULAR PLACES</strong>
+          <small>Find your next stop</small>
+        </a>
+
+        <a href="#routes">
+          <b>02</b>
+          <strong>ROUTE GUIDES</strong>
+          <small>Plan the journey</small>
+        </a>
+
+        <a href="#tips">
+          <b>03</b>
+          <strong>TRAVEL TIPS</strong>
+          <small>Go prepared</small>
+        </a>
+
+        <a href="#community">
+          <b>04</b>
+          <strong>COMMUNITY</strong>
+          <small>Share your adventure</small>
+        </a>
+      </section>
+
+      <!-- ROUTES -->
+      <section class="dark-section" id="routes">
+        <div class="section-wrap">
+          <div class="section-title">
+            <span>MAP & ROUTES / 02</span>
+
+            <h2>CHOOSE YOUR PATH.</h2>
+          </div>
+
+          <div class="route-grid">
+            <div class="route-map">
+              <div class="map-lines"></div>
+              <div class="map-route"></div>
+
+              <i class="map-pin pin-a">A</i>
+              <i class="map-pin pin-b">B</i>
+              <i class="map-pin pin-c">C</i>
+              <i class="map-pin pin-d">D</i>
+
+              <strong>
+                PHILIPPINES<br />
+                TRAVEL ROUTE
+              </strong>
+            </div>
+
+            <div class="route-list">
+              <a href="#sites">
+                <span>01</span>
+
+                <div>
+                  <small>3 DAYS</small>
+                  <h3>MANILA → BANAUE</h3>
+                  <p>History → highlands → rice terraces</p>
+                </div>
+
+                →
+              </a>
+
+              <a href="#sites">
+                <span>02</span>
+
+                <div>
+                  <small>4 DAYS</small>
+                  <h3>SAGADA → PALAWAN</h3>
+                  <p>Mountain trails → caves → islands</p>
+                </div>
+
+                →
+              </a>
+
+              <a href="#sites">
+                <span>03</span>
+
+                <div>
+                  <small>5 DAYS</small>
+                  <h3>EL NIDO → CORON</h3>
+                  <p>Lagoons → beaches → open sea</p>
+                </div>
+
+                →
+              </a>
+
+              <a href="#sites">
+                <span>04</span>
+
+                <div>
+                  <small>3 DAYS</small>
+                  <h3>CEBU → BOHOL</h3>
+                  <p>Landmarks → coastlines → hills</p>
+                </div>
+
+                →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRAVEL TIPS -->
+      <section class="tips-section" id="tips">
+        <div class="section-wrap">
+          <div class="section-title">
+            <span>TRAVEL TIPS / 03</span>
+
+            <h2>
+              GO PREPARED.<br />
+              STAY CURIOUS.
+            </h2>
+          </div>
+
+          <div class="tips-grid">
+            <article>
+              <b>01</b>
+
+              <h3>PACK LIGHTER</h3>
+
+              <p>Bring what you need and leave room for the unexpected.</p>
+            </article>
+
+            <article>
+              <b>02</b>
+
+              <h3>PLAN, THEN WANDER</h3>
+
+              <p>
+                Know the essentials while leaving space for spontaneous
+                discoveries.
+              </p>
+            </article>
+
+            <article>
+              <b>03</b>
+
+              <h3>RESPECT THE PLACE</h3>
+
+              <p>
+                Learn local customs, protect nature, and support local
+                communities.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALLERY -->
+      <section class="gallery-section" id="gallery">
+        <div class="section-wrap">
+          <div class="section-title light-title">
+            <span>TRAVEL GALLERIES / 04</span>
+
+            <h2>
+              SEE THE WORLD<br />
+              THROUGH EXPLORERS.
+            </h2>
+          </div>
+
+          <div class="gallery-grid">
+            <img src="EL NIDO LAGOONS.jpg" alt="El Nido" />
+
+            <img src="SAGADA MOUNTAINS.jpg" alt="Sagada" />
+
+            <img src="BOHOL CHOCOLATE HILLS.jpg" alt="Bohol" />
+
+            <img src="CARON KAYANGAN LAKE.jpg" alt="Coron" />
+
+            <img src="INTRAMUROS.jpg" alt="Intramuros" />
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMUNITY -->
+      <section class="community" id="community">
+        <div class="section-wrap community-inner">
+          <div>
+            <span>COMMUNITY / 05</span>
+
+            <h2>
+              YOUR STORY COULD<br />
+              INSPIRE THE NEXT<br />
+              EXPLORER.
+            </h2>
+
+            <p>
+              Share your photos, routes, favorite places, and unforgettable
+              moments.
+            </p>
+          </div>
+
+          <a class="outline-button" href="#share"> JOIN THE COMMUNITY → </a>
+        </div>
+      </section>
+
+      <!-- SHARE YOUR STORY -->
+      <section class="share-section" id="share">
+        <div class="section-wrap share-grid">
+          <div>
+            <span>SHARE YOUR STORIES / 06</span>
+
+            <h2>
+              WHERE HAVE<br />
+              YOU BEEN?
+            </h2>
+
+            <p>
+              Tell the community about a place, route, adventure, or moment
+              worth remembering.
+            </p>
+          </div>
+
+          <form id="storyForm">
+            <input
+              id="storyName"
+              type="text"
+              placeholder="Your name"
+              required
+            />
+
+            <input
+              id="storyTitle"
+              type="text"
+              placeholder="Story title"
+              required
+            />
+
+            <textarea
+              id="storyText"
+              rows="5"
+              placeholder="Write about your adventure..."
+              required
+            ></textarea>
+
+            <button class="dark-button" type="submit">SHARE STORY</button>
+
+            <p id="formMessage"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <a class="brand footer-brand" href="#home">
+            THE EXPLORER'S <span>VAULT</span>
+          </a>
+
+          <p>Discover more. Go further.</p>
+        </div>
+
+        <div>
+          <h4>EXPLORE</h4>
+
+          <a href="#sites"> Beautiful Sites </a>
+
+          <a href="#routes"> Route Guides </a>
+        </div>
+
+        <div>
+          <h4>STORIES</h4>
+
+          <a href="#gallery"> Photo Stories </a>
+
+          <a href="#community"> User Photos </a>
+        </div>
+
+        <div>
+          <h4>COMMUNITY</h4>
+
+          <a href="#community"> Discussions </a>
+
+          <a href="#share"> Share Your Story </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span> © 2026 THE EXPLORER'S VAULT </span>
+
+        <span> BUILT FOR CURIOUS TRAVELERS. </span>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
+  <script>
+    
+  </script>
+</body>
+</html>
